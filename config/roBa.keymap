@@ -14,14 +14,15 @@
 
 &sl { release-after-ms = <180>; };
 
-
 &trackball_listener {
     scroller {
         layers = <SCROLL>;
-        input-processors = <&zip_xy_to_scroll_mapper>, <&zip_wheel_scaler -4 1>, <&zip_hwheel_scaler -4 1>;
+        input-processors =
+            <&zip_xy_to_scroll_mapper>,
+            <&zip_wheel_scaler -4 1>,
+            <&zip_hwheel_scaler -4 1>;
     };
 };
-
 
 / {
     combos {
@@ -200,10 +201,10 @@
 
         SYM {
             bindings = <
-&kp EXCLAMATION  &kp AT_SIGN      &kp HASH   &kp DOLLAR  &kp PERCENT                      &kp CARET             &kp AMPERSAND          &kp ASTERISK   &kp MINUS         &kp EQUAL
-&kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_N3  &kp KP_N4   &kp KP_N5    &trans      &trans  &kp KP_N6             &kp KP_N7              &kp KP_N8      &kp KP_N9         &kp KP_N0
-&trans           &trans           &trans     &trans      &trans       &trans      &trans  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp LESS_THAN  &kp GREATER_THAN  &trans
-&trans           &trans           &trans     &trans      &trans       &trans      &trans  &trans                                                                        &trans
+&kp EXCLAMATION  &kp AT_SIGN   &kp HASH      &kp DOLLAR    &kp PERCENT                                   &kp CARET             &kp AMPERSAND          &kp ASTERISK   &kp MINUS         &kp EQUAL
+&kp NUMBER_1     &kp NUMBER_2  &kp NUMBER_3  &kp NUMBER_4  &kp NUMBER_5  &kp NUMBER_6      &kp NUMBER_7  &kp NUMBER_8          &kp NUMBER_9           &kp NUMBER_0   &kp MINUS         &kp EQUAL
+&trans           &trans        &trans        &trans        &trans        &trans            &trans        &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp LESS_THAN  &kp GREATER_THAN  &trans
+&trans           &trans        &trans        &trans        &trans        &trans            &trans        &trans                                                                        &trans
             >;
         };
 
