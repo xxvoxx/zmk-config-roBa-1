@@ -14,16 +14,6 @@
 
 &sl { release-after-ms = <180>; };
 
-&trackball_listener {
-    scroller {
-        layers = <SCROLL>;
-        input-processors =
-            <&zip_xy_to_scroll_mapper>,
-            <&zip_wheel_scaler -4 1>,
-            <&zip_hwheel_scaler -4 1>;
-    };
-};
-
 / {
     combos {
         compatible = "zmk,combos";
