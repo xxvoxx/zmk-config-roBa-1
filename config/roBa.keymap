@@ -22,25 +22,21 @@
         single_quote {
             bindings = <&kp SINGLE_QUOTE>;
             key-positions = <7 8>;
-            layers = <2>;
         };
 
         double_quote {
             bindings = <&kp DOUBLE_QUOTES>;
             key-positions = <19 20>;
-            layers = <2>;
         };
 
         back_quote {
             bindings = <&kp GRAVE>;
             key-positions = <31 32>;
-            layers = <2>;
         };
 
         lgts {
             bindings = <&kp LEFT_ALT>;
             key-positions = <36 35>;
-            layers = <2>;
         };
 
         tab {
