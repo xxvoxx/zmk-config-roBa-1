@@ -19,24 +19,29 @@
     combos {
         compatible = "zmk,combos";
 
+        op {
+            bindings = <&kp MINUS>;
+            key-positions = <9 8>;
+        };
+
         single_quote {
             bindings = <&kp SINGLE_QUOTE>;
             key-positions = <21 20>;
         };
 
-        slash {
-            bindings = <&kp SLASH>;
-            key-positions = <33 32>;
+        backslash {
+            bindings = <&kp BACKSLASH>;
+            key-positions = <32 33>;
+        };
+
+        grave {
+            bindings = <&kp GRAVE>;
+            key-positions = <0 1>;
         };
 
         tab {
             bindings = <&kp TAB>;
             key-positions = <11 10>;
-        };
-
-        op {
-            bindings = <&kp MINUS>;
-            key-positions = <9 8>;
         };
 
         caps {
@@ -57,16 +62,6 @@
         parenthesis {
             bindings = <&parenthesis>;
             key-positions = <31 30>;
-        };
-
-        grave {
-            bindings = <&kp GRAVE>;
-            key-positions = <0 1>;
-        };
-
-        backslash {
-            bindings = <&kp BACKSLASH>;
-            key-positions = <32 33>;
         };
     };
 
