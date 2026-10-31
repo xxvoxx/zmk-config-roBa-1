@@ -7,6 +7,7 @@
 #define SCROLL 5
 #define SNIPE 6
 
+/* ホールドタップの基本設定 */
 &mt {
     flavor = "balanced";
     quick-tap-ms = <0>;
@@ -73,7 +74,6 @@
             label = "TO_LAYER_0";
         };
 
-        /* カッコ入力後、自動でカーソルを1歩戻して中に文字を打てるように調整 */
         brackets: brackets {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -137,27 +137,6 @@
 
             label = "MACRO_LEFT_CLICK";
         };
-
-        /* WIN環境用：エンコーダーによるAlt+Tab画面切り替えマクロ */
-        alt_tab_cw: alt_tab_cw {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press &kp LALT>,
-                <&macro_tap &kp TAB>,
-                <&macro_release_minus_delay 1500 &kp LALT>; /* 1.5秒操作がないと自動確定 */
-            label = "ALT_TAB_CW";
-        };
-
-        alt_tab_ccw: alt_tab_ccw {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press &kp LALT>,
-                <&macro_tap &kp LS(TAB)>,
-                <&macro_release_minus_delay 1500 &kp LALT>; /* 1.5秒操作がないと自動確定 */
-            label = "ALT_TAB_CCW";
-        };
     };
 
     behaviors {
@@ -176,6 +155,16 @@
             display-name = "Toggle Layer Off";
             toggle-mode = "off";
         };
+
+        /* 新設：長押しするとAltをホールドし、タップすると無効になる挙動 */
+        alt_holder: alt_holder {
+            compatible = "zmk,behavior-hold-tap";
+            label = "ALT_HOLDER";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&kp>, <&none>;
+        };
     };
 
     keymap {
@@ -186,7 +175,7 @@
 &kp Q             &kp W     &kp E         &kp R             &kp T                                       &kp Y        &kp U  &kp I      &kp O       &kp P
 &kp A             &kp S     &kp D         &kp F             &kp G      &msc SCRL_UP      &kp K_APP      &kp H        &kp J  &kp K      &kp L       &kp SEMICOLON
 &mt LEFT_SHIFT Z  &kp X     &kp C         &kp V             &kp B      &kp A             &kp DEL        &kp N        &kp M  &kp COMMA  &kp PERIOD  &mt RIGHT_SHIFT SLASH
-&kp LEFT_CONTROL  &kp LWIN  &kp LEFT_ALT  &lt 3 LANGUAGE_2  &kp SPACE  &lt 1 LANG1       &kp BACKSPACE  &lt 2 ENTER                                &kp ESC
+&kp LEFT_CONTROL  &kp LWIN  &kp LEFT_ALT  &alt_holder LALT LANGUAGE_2  &kp SPACE  &lt 1 LANG1       &kp BACKSPACE  &lt 2 ENTER                                &kp ESC
             >;
         };
 
@@ -208,24 +197,25 @@
             >;
         };
 
+        /* 画面切り替えレイヤー（旧FUNCTION） */
         FUNCTION {
             bindings = <
-&trans  &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp KP_EQUAL                               &none   &none   &none    &none    &none
+&trans  &kp KP_NUMBER_7  &kp KP_NUMBER_8  &kp KP_NUMBER_9  &kp KP_EQUAL                               &none   &none   &none    &none    &screenshot
 &trans  &kp KP_NUMBER_4  &kp KP_NUMBER_5  &kp KP_NUMBER_6  &kp KP_MULTIPLY  &kp KP_PLUS       &kp F7  &kp F8  &kp F9  &kp F10  &kp F11  &kp F12
 &trans  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_SLASH     &kp KP_MINUS      &kp F1  &kp F2  &kp F3  &kp F4   &kp F5   &kp F6
 &trans  &kp KP_NUMBER_0  &kp KP_DOT       &trans           &trans           &trans            &trans  &trans                            &trans
             >;
 
-            /* エンコーダーの挙動を Alt+Tab 画面切り替えマクロ に変更 */
-            sensor-bindings = <&inc_dec_macro &alt_tab_cw &alt_tab_ccw>;
+            /* エンコーダーを回すと単体のTab / Shift+Tabが連打される純粋な設定 */
+            sensor-bindings = <&inc_dec_kp TAB LS(TAB)>;
         };
 
         MOUSE {
             bindings = <
-&trans  &trans  &trans  &trans  &trans                      &trans  &trans             &mo 6   &trans    &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &macro_left_click  &mo 5   &mkp MB2  &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans             &trans  &trans    &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                                       &trans
+&kp LC(W)  &kp LC(LS(T))  &kp LA(LEFT)  &kp LA(RIGHT)  &trans                                     &trans  &trans             &mo 6   &trans    &trans
+&trans     &trans         &trans        &trans         &trans         &trans      &trans          &trans  &macro_left_click  &tog 5  &mkp MB2  &trans
+&trans     &trans         &trans        &trans         &trans         &trans      &trans          &trans  &trans             &trans  &trans    &trans
+&trans     &trans         &trans        &mkp MB2       &macro_left_click &trans   &trans          &trans                                       &trans
             >;
         };
 
