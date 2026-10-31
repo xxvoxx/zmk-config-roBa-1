@@ -5,27 +5,16 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/zmkfirmware/zmk-build-arm:stable
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache west modules
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-zephyr-modules
-        with:
-          path: |
-            modules/
-            tools/
-            zephyr/
-            bootloader/
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('config/west.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-
-      - name: Initialize workspace (west init)
-        uses: zmkfirmware/zmk-actions-toolkit/setup-executor@main
+      - name: Initialize west workspace
+        run: |
+          west init -l config
+          west update
 
       - name: Export ZMK Modules
         run: |
@@ -33,7 +22,7 @@ jobs:
 
       - name: Build roBa Right (Studio Support)
         run: |
-          west build -s app -b xiao_ble//zmk -- -DSHIELD=roBa_R -DSNIPPET=studio-rpc-usb-uart -DZMK_EXTRA_MODULES="${{ github.workspace }}"
+          west build -s zmk/app -b xiao_ble//zmk -- -DSHIELD=roBa_R -DSNIPPET=studio-rpc-usb-uart -DZMK_EXTRA_MODULES="${{ github.workspace }}"
 
       - name: Archive roBa Right firmware
         uses: actions/upload-artifact@v4
@@ -43,7 +32,7 @@ jobs:
 
       - name: Build roBa Left
         run: |
-          west build -p always -s app -b xiao_ble//zmk -- -DSHIELD=roBa_L -DZMK_EXTRA_MODULES="${{ github.workspace }}"
+          west build -p always -s zmk/app -b xiao_ble//zmk -- -DSHIELD=roBa_L -DZMK_EXTRA_MODULES="${{ github.workspace }}"
 
       - name: Archive roBa Left firmware
         uses: actions/upload-artifact@v4
@@ -53,7 +42,7 @@ jobs:
 
       - name: Build Settings Reset
         run: |
-          west build -p always -s app -b xiao_ble//zmk -- -DSHIELD=settings_reset -DZMK_EXTRA_MODULES="${{ github.workspace }}"
+          west build -p always -s zmk/app -b xiao_ble//zmk -- -DSHIELD=settings_reset -DZMK_EXTRA_MODULES="${{ github.workspace }}"
 
       - name: Archive Settings Reset firmware
         uses: actions/upload-artifact@v4
