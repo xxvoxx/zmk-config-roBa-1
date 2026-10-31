@@ -1,31 +1,5 @@
-name: Build ZMK Firmware
-
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install West
-        run: |
-          pip3 install west
-
-      - name: Initialize West Workspace
-        run: |
-          west init -l config
-          west update
-
-      - name: Open-source Build Simulation
-        run: |
-          echo "Bypassing buggy matrix scripts..."
-
-      - name: Re-run with stable branch
-        uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3-branch
+    uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3-branch
