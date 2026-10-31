@@ -217,7 +217,7 @@
             >;
 
             /* エンコーダーの挙動を Alt+Tab 画面切り替えマクロ に変更 */
-            sensor-bindings = <&inc_dec_macro alt_tab_cw alt_tab_ccw>;
+            sensor-bindings = <&inc_dec_macro &alt_tab_cw &alt_tab_ccw>;
         };
 
         MOUSE {
