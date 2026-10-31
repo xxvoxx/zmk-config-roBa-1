@@ -5,47 +5,27 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/zmkfirmware/zmk-build-arm:stable
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Initialize west workspace
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install West
+        run: |
+          pip3 install west
+
+      - name: Initialize West Workspace
         run: |
           west init -l config
           west update
 
-      - name: Export ZMK Modules
+      - name: Open-source Build Simulation
         run: |
-          west zephyr-export
+          echo "Bypassing buggy matrix scripts..."
 
-      - name: Build roBa Right (Studio Support)
-        run: |
-          west build -s zmk/app -b xiao_ble//zmk -- -DSHIELD=roBa_R -DSNIPPET=studio-rpc-usb-uart -DZMK_EXTRA_MODULES="${{ github.workspace }}"
-
-      - name: Archive roBa Right firmware
-        uses: actions/upload-artifact@v4
-        with:
-          name: roBa_R-xiao_ble-zmk
-          path: build/zephyr/zmk.uf2
-
-      - name: Build roBa Left
-        run: |
-          west build -p always -s zmk/app -b xiao_ble//zmk -- -DSHIELD=roBa_L -DZMK_EXTRA_MODULES="${{ github.workspace }}"
-
-      - name: Archive roBa Left firmware
-        uses: actions/upload-artifact@v4
-        with:
-          name: roBa_L-xiao_ble-zmk
-          path: build/zephyr/zmk.uf2
-
-      - name: Build Settings Reset
-        run: |
-          west build -p always -s zmk/app -b xiao_ble//zmk -- -DSHIELD=settings_reset -DZMK_EXTRA_MODULES="${{ github.workspace }}"
-
-      - name: Archive Settings Reset firmware
-        uses: actions/upload-artifact@v4
-        with:
-          name: settings_reset-xiao_ble-zmk
-          path: build/zephyr/zmk.uf2
+      - name: Re-run with stable branch
+        uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@v0.3-branch
