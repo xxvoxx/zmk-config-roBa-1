@@ -132,7 +132,7 @@
                 <&macro_release>,
                 <&mkp LCLK>,
                 <&macro_tap>,
-                <&tog 4 &sl 4>; // ⚠️ V3標準のトグル挙動に変更しました
+                <&tog_off 4 &sl 4>;
 
             label = "MACRO_LEFT_CLICK";
         };
@@ -147,19 +147,25 @@
             #binding-cells = <2>;
             tapping-term-ms = <300>;
         };
-        // ⚠️ エラーの原因となる独自の tog_off 定義を削除しました
+
+        tog_off: toggle_layer_off_only {
+            compatible = "zmk,behavior-toggle-layer";
+            #binding-cells = <1>;
+            display-name = "Toggle Layer Off";
+            toggle-mode = "off";
+        };
     };
 
     keymap {
         compatible = "zmk,keymap";
+
         default_layer {
             bindings = <
 &kp Q             &kp W     &kp E         &kp R             &kp T                                       &kp Y        &kp U  &kp I      &kp O       &kp P
-&kp A             &kp S     &kp D         &kp F             &kp G      &msc SCRL_UP 0    &kp K_APP      &kp H        &kp J  &kp K      &kp L       &kp SEMICOLON
+&kp A             &kp S     &kp D         &kp F             &kp G      &msc SCRL_UP      &kp K_APP      &kp H        &kp J  &kp K      &kp L       &kp SEMICOLON
 &mt LEFT_SHIFT Z  &kp X     &kp C         &kp V             &kp B      &kp A             &kp DEL        &kp N        &kp M  &kp COMMA  &kp PERIOD  &mt RIGHT_SHIFT SLASH
 &kp LEFT_CONTROL  &kp LWIN  &kp LEFT_ALT  &lt 3 LANGUAGE_2  &kp SPACE  &lt 1 LANG1       &kp BACKSPACE  &lt 2 ENTER                                &kp ESC
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ V3のエラー回避用
         };
 
         SYM {
@@ -169,7 +175,6 @@
 &kp EXCLAMATION  &kp AT_SIGN   &kp HASH      &kp DOLLAR    &kp PERCENT   &kp CARET         &kp AMPERSAND  &kp ASTERISK  &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp UNDERSCORE  &kp PLUS
 &trans           &trans        &trans        &trans        &trans        &trans            &trans         &trans                                                                     &trans
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ 追加
         };
 
         NUM_BLE {
@@ -179,7 +184,6 @@
 &trans  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_SLASH     &kp KP_MINUS      &trans  &kp PAGE_DOWN  &kp LEFT  &kp DOWN  &kp RIGHT  &trans
 &trans  &kp KP_NUMBER_0  &kp KP_DOT       &trans           &trans           &trans            &trans  &trans                                        &trans
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ 追加
         };
 
         FUNCTION {
@@ -189,7 +193,8 @@
 &trans  &kp KP_NUMBER_1  &kp KP_NUMBER_2  &kp KP_NUMBER_3  &kp KP_SLASH     &kp KP_MINUS      &kp F1  &kp F2  &kp F3  &kp F4   &kp F5   &kp F6
 &trans  &kp KP_NUMBER_0  &kp KP_DOT       &trans           &trans           &trans            &trans  &trans                            &trans
             >;
-            sensor-bindings = <&inc_dec_kp LC(PAGE_UP) LC(PAGE_DOWN)>; // 元々設定されているのでこのままでOK
+
+            sensor-bindings = <&inc_dec_kp LC(PAGE_UP) LC(PAGE_DOWN)>;
         };
 
         MOUSE {
@@ -199,7 +204,6 @@
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans             &trans  &trans    &trans
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                                       &trans
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ 追加
         };
 
         SCROLL {
@@ -209,7 +213,6 @@
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                          &trans
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ 追加
         };
 
         SNIPE {
@@ -219,8 +222,6 @@
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans             &trans  &trans    &trans
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                                       &trans
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ 追加
         };
     };
 };
-
