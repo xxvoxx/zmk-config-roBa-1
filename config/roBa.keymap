@@ -159,7 +159,7 @@
 &mt LEFT_SHIFT Z  &kp X     &kp C         &kp V             &kp B      &kp A             &kp DEL        &kp N        &kp M  &kp COMMA  &kp PERIOD  &mt RIGHT_SHIFT SLASH
 &kp LEFT_CONTROL  &kp LWIN  &kp LEFT_ALT  &lt 3 LANGUAGE_2  &kp SPACE  &lt 1 LANG1       &kp BACKSPACE  &lt 2 ENTER                                &kp ESC
             >;
-            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ V3のエラー回避用に追加
+            sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>; // ⚠️ V3のエラー回避用
         };
 
         SYM {
