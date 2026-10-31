@@ -7,7 +7,6 @@ manifest:
   projects:
     - name: zmk
       remote: zmkfirmware
-      repo-path: zmk
       revision: main
       import: app/west.yml
     - name: zmk-pmw3610-driver
