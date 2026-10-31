@@ -73,31 +73,32 @@
             label = "TO_LAYER_0";
         };
 
+        /* カッコ入力後、自動でカーソルを1歩戻して中に文字を打てるように調整 */
         brackets: brackets {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LEFT_BRACKET &kp RIGHT_BRACKET>;
+            bindings = <&kp LEFT_BRACKET &kp RIGHT_BRACKET &kp LEFT>;
             label = "BRACKETS";
         };
 
         braces: braces {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LEFT_BRACE &kp RIGHT_BRACE>;
+            bindings = <&kp LEFT_BRACE &kp RIGHT_BRACE &kp LEFT>;
             label = "BRACES";
         };
 
         parenthesis: parthens {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LEFT_PARENTHESIS &kp RIGHT_PARENTHESIS>;
+            bindings = <&kp LEFT_PARENTHESIS &kp RIGHT_PARENTHESIS &kp LEFT>;
             label = "PARTHENS";
         };
 
         lgts: lgts {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LESS_THAN &kp GREATER_THAN>;
+            bindings = <&kp LESS_THAN &kp GREATER_THAN &kp LEFT>;
             label = "LGTS";
         };
 
@@ -135,6 +136,27 @@
                 <&tog_off 4 &sl 4>;
 
             label = "MACRO_LEFT_CLICK";
+        };
+
+        /* WIN環境用：エンコーダーによるAlt+Tab画面切り替えマクロ */
+        alt_tab_cw: alt_tab_cw {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press &kp LALT>,
+                <&macro_tap &kp TAB>,
+                <&macro_release_minus_delay 1500 &kp LALT>; /* 1.5秒操作がないと自動確定 */
+            label = "ALT_TAB_CW";
+        };
+
+        alt_tab_ccw: alt_tab_ccw {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings =
+                <&macro_press &kp LALT>,
+                <&macro_tap &kp LS(TAB)>,
+                <&macro_release_minus_delay 1500 &kp LALT>; /* 1.5秒操作がないと自動確定 */
+            label = "ALT_TAB_CCW";
         };
     };
 
@@ -194,7 +216,8 @@
 &trans  &kp KP_NUMBER_0  &kp KP_DOT       &trans           &trans           &trans            &trans  &trans                            &trans
             >;
 
-            sensor-bindings = <&inc_dec_kp LC(PAGE_UP) LC(PAGE_DOWN)>;
+            /* エンコーダーの挙動を Alt+Tab 画面切り替えマクロ に変更 */
+            sensor-bindings = <&inc_dec_macro alt_tab_cw alt_tab_ccw>;
         };
 
         MOUSE {
